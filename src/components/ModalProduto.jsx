@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from 'react-toastify';
 
 export default function ModalProduto({ produto, onClose, onAdicionarAoCarrinho }) {
   const [fotoIndex, setFotoIndex] = useState(0);
@@ -17,7 +18,7 @@ export default function ModalProduto({ produto, onClose, onAdicionarAoCarrinho }
 
   function handleAdicionarAoCarrinho() {
     onAdicionarAoCarrinho(produto); 
-    alert(`"${produto.nome}" foi adicionado ao carrinho!`);
+    toast.success((`"${produto.nome}" foi adicionado ao carrinho!`));
   }
 
   return (
@@ -94,7 +95,7 @@ export default function ModalProduto({ produto, onClose, onAdicionarAoCarrinho }
 
               {/* Adicionar ao carrinho */}
               <button
-                className="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-3 rounded-md transition-colors w-full md:w-auto"
+                className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-3 rounded-md transition-colors w-full md:w-auto"
                  onClick={handleAdicionarAoCarrinho}
               >
                 Adicionar ao carrinho 🛒

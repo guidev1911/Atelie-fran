@@ -245,7 +245,7 @@ export default function Portfolio() {
       <div className="absolute top-4 right-6 z-50">
         <button
           onClick={() => setMostrarCarrinho(true)}
-          className="bg-pink-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-pink-700"
+          className="bg-pink-500 text-white px-6 py-3 text-lg rounded-full shadow-md hover:bg-pink-600"
         >
           🛍️ Carrinho ({carrinho.reduce((total, item) => total + item.quantidade, 0)})
         </button>
@@ -268,7 +268,7 @@ export default function Portfolio() {
 
       {/* Menu categorias */}
       <nav className="bg-white shadow-md">
-        <ul className="flex justify-center space-x-12 py-4 text-lg font-medium text-gray-700">
+        <ul className="flex bg-pink-100 justify-center space-x-12 py-4 text-lg font-medium text-gray-700">
           {["Moda", "Vestuário", "Acessórios"].map((cat) => (
             <li
               key={cat}
@@ -307,7 +307,7 @@ export default function Portfolio() {
         </div>
       </main>
 
-      <footer className="bg-gray-600 text-pink-600 p-4 text-center">
+      <footer className="bg-pink-100 text-pink-600 p-4 text-center">
         © {new Date().getFullYear()} Siga nossa página no instagram.
       </footer>
 

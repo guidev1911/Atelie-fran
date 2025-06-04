@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from 'react-toastify';
 
 export default function ModalCarrinho({ carrinho = [], onClose, onAtualizarCarrinho }) {
   const [selecionados, setSelecionados] = useState([]);
@@ -11,12 +12,13 @@ export default function ModalCarrinho({ carrinho = [], onClose, onAtualizarCarri
 
   function excluirSelecionados() {
     if (selecionados.length === 0) {
-      alert("Selecione ao menos um item para excluir.");
+      toast.error("Selecione ao menos um item para excluir.");
       return;
     }
     const novoCarrinho = carrinho.filter((item) => !selecionados.includes(item.id));
     onAtualizarCarrinho(novoCarrinho);
     setSelecionados([]);
+    toast.warn("itens excluídos");
   }
 
   const totalCarrinho = carrinho.reduce((total, item) => {
@@ -98,7 +100,7 @@ export default function ModalCarrinho({ carrinho = [], onClose, onAtualizarCarri
                   href={gerarMensagemWhatsApp()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-md font-semibold"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md ml-4"
                   aria-label="Finalizar orçamento via WhatsApp"
                 >
                   Finalizar orçamento via WhatsApp
