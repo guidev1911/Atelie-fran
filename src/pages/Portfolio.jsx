@@ -218,6 +218,11 @@ export default function Portfolio() {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }, [carrinho]);
 
+  function atualizarCarrinho(novoCarrinho) {
+  setCarrinho(novoCarrinho);
+  localStorage.setItem("carrinho", JSON.stringify(novoCarrinho));
+  }
+
   function adicionarAoCarrinho(produto) {
     setCarrinho((prevCarrinho) => {
       const produtoExistente = prevCarrinho.find(item => item.id === produto.id);
@@ -236,7 +241,7 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 relative">
-      {/* Botão Carrinho no canto superior direito */}
+      {/* Botão Carrinho */}
       <div className="absolute top-4 right-6 z-50">
         <button
           onClick={() => setMostrarCarrinho(true)}
@@ -315,9 +320,12 @@ export default function Portfolio() {
         />
       )}
 
-      {/* Modal do Carrinho */}
-      {mostrarCarrinho && (
-        <ModalCarrinho carrinho={carrinho} onClose={() => setMostrarCarrinho(false)} />
+        {mostrarCarrinho && (
+        <ModalCarrinho
+          carrinho={carrinho}
+          onClose={() => setMostrarCarrinho(false)}
+          onAtualizarCarrinho={atualizarCarrinho}
+        />
       )}
     </div>
   );

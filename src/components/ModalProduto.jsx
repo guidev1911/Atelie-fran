@@ -16,7 +16,7 @@ export default function ModalProduto({ produto, onClose, onAdicionarAoCarrinho }
   }
 
   function handleAdicionarAoCarrinho() {
-    onAdicionarAoCarrinho(produto); // chama função do pai para atualizar o estado
+    onAdicionarAoCarrinho(produto); 
     alert(`"${produto.nome}" foi adicionado ao carrinho!`);
   }
 
