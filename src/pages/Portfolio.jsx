@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import bannerCroche from '../images/crochePrincipal.jpg'; 
 import ModalProduto from "../components/ModalProduto";
-
+import ModalCarrinho from "../components/ModalCarrinho";
 
 const dados = {
   Moda: [
@@ -206,26 +206,58 @@ const dados = {
 export default function Portfolio() {
   const [categoria, setCategoria] = useState("Moda");
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+  const [carrinho, setCarrinho] = useState([]);
+  const [mostrarCarrinho, setMostrarCarrinho] = useState(false);
 
-  {produtoSelecionado && (
-  <ModalProduto produto={produtoSelecionado} onClose={() => setProdutoSelecionado(null)} />
-  )}
+  useEffect(() => {
+    const carrinhoSalvo = JSON.parse(localStorage.getItem("carrinho")) || [];
+    setCarrinho(carrinhoSalvo);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  }, [carrinho]);
+
+  function adicionarAoCarrinho(produto) {
+    setCarrinho((prevCarrinho) => {
+      const produtoExistente = prevCarrinho.find(item => item.id === produto.id);
+
+      if (produtoExistente) {
+        return prevCarrinho.map(item =>
+          item.id === produto.id
+            ? { ...item, quantidade: item.quantidade + 1 }
+            : item
+        );
+      } else {
+        return [...prevCarrinho, { ...produto, quantidade: 1 }];
+      }
+    });
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Fundo foto topo */}
+    <div className="min-h-screen flex flex-col bg-gray-50 relative">
+      {/* Botão Carrinho no canto superior direito */}
+      <div className="absolute top-4 right-6 z-50">
+        <button
+          onClick={() => setMostrarCarrinho(true)}
+          className="bg-pink-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-pink-700"
+        >
+          🛍️ Carrinho ({carrinho.reduce((total, item) => total + item.quantidade, 0)})
+        </button>
+      </div>
+
+      {/* Fundo topo com imagem */}
       <div
         className="h-[45vh] bg-cover bg-center relative"
         style={{
-          backgroundImage:
-            `url(${bannerCroche})`,
+          backgroundImage: `url(${bannerCroche})`,
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-white px-4">
           <h1 className="text-4xl md:text-5xl font-bold drop-shadow-lg">Ateliê da Fran</h1>
-        <p className="mt-2 text-lg md:text-xl drop-shadow-md text-center">
-        tudo o que você possa imaginar, feito de crochê!
-        </p>
+          <p className="mt-2 text-lg md:text-xl drop-shadow-md text-center">
+            tudo o que você possa imaginar, feito de crochê!
+          </p>
         </div>
       </div>
 
@@ -246,7 +278,7 @@ export default function Portfolio() {
         </ul>
       </nav>
 
-      {/* Conteúdo categoria */}
+      {/* Produtos da categoria */}
       <main className="flex-grow container mx-auto px-6 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {dados[categoria].map(({ id, nome, descricao, imagens }) => (
@@ -256,7 +288,8 @@ export default function Portfolio() {
               onClick={() => setProdutoSelecionado(dados[categoria].find((p) => p.id === id))}
               tabIndex={0}
               onKeyDown={(e) => {
-                if (e.key === "Enter") setProdutoSelecionado(dados[categoria].find((p) => p.id === id));
+                if (e.key === "Enter")
+                  setProdutoSelecionado(dados[categoria].find((p) => p.id === id));
               }}
             >
               <img src={imagens[0]} alt={nome} className="rounded-t-lg object-cover w-full h-48" />
@@ -273,9 +306,18 @@ export default function Portfolio() {
         © {new Date().getFullYear()} Siga nossa página no instagram.
       </footer>
 
-      {/* Modal */}
+      {/* Modal do Produto */}
       {produtoSelecionado && (
-        <ModalProduto produto={produtoSelecionado} onClose={() => setProdutoSelecionado(null)} />
+        <ModalProduto
+          produto={produtoSelecionado}
+          onClose={() => setProdutoSelecionado(null)}
+          onAdicionarAoCarrinho={adicionarAoCarrinho}
+        />
+      )}
+
+      {/* Modal do Carrinho */}
+      {mostrarCarrinho && (
+        <ModalCarrinho carrinho={carrinho} onClose={() => setMostrarCarrinho(false)} />
       )}
     </div>
   );

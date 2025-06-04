@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function ModalProduto({ produto, onClose }) {
+export default function ModalProduto({ produto, onClose, onAdicionarAoCarrinho }) {
   const [fotoIndex, setFotoIndex] = useState(0);
 
   if (!produto) return null;
@@ -13,6 +13,11 @@ export default function ModalProduto({ produto, onClose }) {
 
   function nextFoto() {
     setFotoIndex((i) => (i === fotos.length - 1 ? 0 : i + 1));
+  }
+
+  function handleAdicionarAoCarrinho() {
+    onAdicionarAoCarrinho(produto); // chama função do pai para atualizar o estado
+    alert(`"${produto.nome}" foi adicionado ao carrinho!`);
   }
 
   return (
@@ -90,9 +95,7 @@ export default function ModalProduto({ produto, onClose }) {
               {/* Adicionar ao carrinho */}
               <button
                 className="bg-pink-600 hover:bg-pink-700 text-white font-semibold px-6 py-3 rounded-md transition-colors w-full md:w-auto"
-                onClick={() => {
-                  // futura função para adicionar ao carrinho
-                }}
+                 onClick={handleAdicionarAoCarrinho}
               >
                 Adicionar ao carrinho 🛒
               </button>
